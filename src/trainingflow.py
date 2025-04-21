@@ -80,6 +80,10 @@ class TrainingFlow(FlowSpec):
             joblib.dump(self.best_model, model_dir)
 
             mlflow.sklearn.log_model(self.best_model, "model")
+
+            model_uri = f"runs:/{run.info.run_id}/model"
+            mlflow.register_model(model_uri, self.best_model_name)
+            
             print(f"registered {self.best_model_name} to MLflow with RMSE {self.best_rmse:.4f}")
         self.next(self.end)
 
